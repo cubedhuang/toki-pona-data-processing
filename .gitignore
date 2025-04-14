@@ -1,0 +1,5 @@
+node_modules
+grammar-processed.ne
+
+# do not push several gigabytes of data
+files
