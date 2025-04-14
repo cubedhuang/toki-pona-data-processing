@@ -3,3 +3,6 @@ grammar-processed.ne
 
 # do not push several gigabytes of data
 files
+
+# os
+.DS_Store
