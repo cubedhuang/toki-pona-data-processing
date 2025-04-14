@@ -3,7 +3,7 @@ import { RawMessage, ScoredMessage } from "./types";
 import { readFileByLine } from "./utils";
 
 async function main() {
-	const output = Bun.file("./files/scoredmessages.jsonl");
+	const output = Bun.file("./files/1.scoredmessages.jsonl");
 	Bun.write(output, ""); // Clear the file before writing
 	const writer = output.writer();
 
