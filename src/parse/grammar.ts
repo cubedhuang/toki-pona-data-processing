@@ -57,9 +57,10 @@ const grammar: Grammar = {
     {"name": "Main", "symbols": ["Sentence"], "postprocess": id},
     {"name": "Main", "symbols": ["Vocative", "Main"], "postprocess": makeBranch("main")},
     {"name": "Vocative", "symbols": ["GeneralSubject", "WordVocativeMarker"], "postprocess": makeBranch("vocative")},
-    {"name": "Sentence", "symbols": ["Clause_any"], "postprocess": id},
+    {"name": "Sentence", "symbols": ["WordSentenceStarter", "Sentence"], "postprocess": makeBranch("clause")},
     {"name": "Sentence", "symbols": ["Context", "Sentence"], "postprocess": makeBranch("clause")},
     {"name": "Sentence", "symbols": ["WordEmphasis", "Sentence"], "postprocess": makeBranch("clause")},
+    {"name": "Sentence", "symbols": ["Clause_any"], "postprocess": id},
     {"name": "Context", "symbols": ["GeneralSubject", "WordContextMarker"], "postprocess": makeBranch("context_phrase")},
     {"name": "Context", "symbols": ["Clause_strict", "WordContextMarker"], "postprocess": makeBranch("context_clause")},
     {"name": "Clause_any", "symbols": ["GeneralSubject"], "postprocess": id},
@@ -177,7 +178,13 @@ const grammar: Grammar = {
     {"name": "WordPreverb", "symbols": [(lexer.has("word_preverb") ? {type: "word_preverb"} : word_preverb), "WordPreverb$ebnf$1"], "postprocess": makeLeaf("pv")},
     {"name": "WordPreposition$ebnf$1", "symbols": ["WordEmphasis"], "postprocess": id},
     {"name": "WordPreposition$ebnf$1", "symbols": [], "postprocess": () => null},
-    {"name": "WordPreposition", "symbols": [(lexer.has("word_preposition") ? {type: "word_preposition"} : word_preposition), "WordPreposition$ebnf$1"], "postprocess": makeLeaf("prep")}
+    {"name": "WordPreposition", "symbols": [(lexer.has("word_preposition") ? {type: "word_preposition"} : word_preposition), "WordPreposition$ebnf$1"], "postprocess": makeLeaf("prep")},
+    {"name": "WordSentenceStarter$ebnf$1", "symbols": ["WordEmphasis"], "postprocess": id},
+    {"name": "WordSentenceStarter$ebnf$1", "symbols": [], "postprocess": () => null},
+    {"name": "WordSentenceStarter", "symbols": [{"literal":"taso"}, "WordSentenceStarter$ebnf$1"], "postprocess": makeLeaf("start")},
+    {"name": "WordSentenceStarter$ebnf$2", "symbols": ["WordEmphasis"], "postprocess": id},
+    {"name": "WordSentenceStarter$ebnf$2", "symbols": [], "postprocess": () => null},
+    {"name": "WordSentenceStarter", "symbols": [{"literal":"kin"}, "WordSentenceStarter$ebnf$2"], "postprocess": makeLeaf("start")}
   ],
   ParserStart: "Main",
 };

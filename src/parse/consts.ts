@@ -43,5 +43,6 @@ export const labels = [
 	'voc',
 	'pv',
 	'prep',
-	'cont'
+	'cont',
+	'start'
 ] as const;

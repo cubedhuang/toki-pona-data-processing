@@ -41,7 +41,8 @@ const goodLabels: Label[] = [
 	'preposition_phrase',
 	'verb_phrase_intransitive',
 	'verb_phrase_transitive',
-	'verb_phrase_prepositional'
+	'verb_phrase_prepositional',
+	'start'
 ];
 
 function scoreTree(tree: Tree): number {
@@ -56,7 +57,7 @@ function scoreTree(tree: Tree): number {
 		tree.type === 'labelled' &&
 		tree.label === 'head' &&
 		tree.tree.type === 'leaf' &&
-		['ala', 'taso'].includes(tree.tree.word.text)
+		['ala', 'taso', 'kin'].includes(tree.tree.word.text)
 	) {
 		score -= 1.5;
 	}

@@ -23,9 +23,10 @@ Main -> Vocative Main {% makeBranch("main") %}
 
 Vocative -> GeneralSubject WordVocativeMarker {% makeBranch("vocative") %}
 
-Sentence -> Clause<any> {% id %}
+Sentence -> WordSentenceStarter Sentence {% makeBranch("clause") %}
 Sentence -> Context Sentence {% makeBranch("clause") %}
 Sentence -> WordEmphasis Sentence {% makeBranch("clause") %}
+Sentence -> Clause<any> {% id %}
 # Sentence -> Sentence WordEmphasis {% makeBranch("clause") %}
 
 Context -> GeneralSubject WordContextMarker {% makeBranch("context_phrase") %}
@@ -158,3 +159,6 @@ WordModifier -> WordHead {% id %}
 
 WordPreverb -> %word_preverb WordEmphasis:? {% makeLeaf("pv") %}
 WordPreposition -> %word_preposition WordEmphasis:? {% makeLeaf("prep") %}
+
+WordSentenceStarter -> "taso" WordEmphasis:? {% makeLeaf("start") %}
+WordSentenceStarter -> "kin" WordEmphasis:? {% makeLeaf("start") %}
