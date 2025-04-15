@@ -26,7 +26,7 @@ Vocative -> GeneralSubject WordVocativeMarker {% makeBranch("vocative") %}
 Sentence -> Clause<any> {% id %}
 Sentence -> Context Sentence {% makeBranch("clause") %}
 Sentence -> WordEmphasis Sentence {% makeBranch("clause") %}
-Sentence -> Sentence WordEmphasis {% makeBranch("clause") %}
+# Sentence -> Sentence WordEmphasis {% makeBranch("clause") %}
 
 Context -> GeneralSubject WordContextMarker {% makeBranch("context_phrase") %}
 Context -> Clause<strict> WordContextMarker {% makeBranch("context_clause") %}
