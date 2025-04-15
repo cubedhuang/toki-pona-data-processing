@@ -4,6 +4,11 @@ import { tagWords } from './lib/tag';
 import { parseSentence } from './parse/parser';
 import { Tree } from './parse/types';
 
+const text =
+	'a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a li a a a mute'.split(
+		' '
+	);
+
 type ProcessedSentence =
 	| {
 			tree: Tree;
@@ -22,3 +27,5 @@ function processSentence(sentence: string[]): ProcessedSentence {
 		return { tree: null, fail: true };
 	}
 }
+
+console.log(processSentence(text));

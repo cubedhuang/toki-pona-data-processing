@@ -14,12 +14,12 @@ function validateLabel(x: string): Label {
 	return x;
 }
 
-export function catSource(...args: (Tree | string | undefined | null)[]) {
-	return args
-		.map((x) => (typeof x === 'string' ? x : x ? x.source : undefined))
-		.filter((x) => x)
-		.join(' ');
-}
+// export function catSource(...args: (Tree | string | undefined | null)[]) {
+// 	return args
+// 		.map((x) => (typeof x === 'string' ? x : x ? x.source : undefined))
+// 		.filter((x) => x)
+// 		.join(' ');
+// }
 
 export function makeWord([token]: [Token]): Word {
 	return {
@@ -47,8 +47,8 @@ export function makeLabelled(
 		type: 'labelled',
 		tree,
 		aux,
-		label,
-		source: tree.source
+		label
+		// source: tree.source
 	});
 }
 
@@ -59,8 +59,8 @@ export function makeBranch(label: Label): (trees: [Tree, Tree]) => Branch {
 			type: 'branch',
 			left,
 			right,
-			label,
-			source: catSource(left, right)
+			label
+			// source: catSource(left, right)
 		};
 	};
 }
@@ -71,8 +71,8 @@ export function makeRose(label: Label): (children: [Tree[]]) => Rose {
 		return {
 			type: 'rose',
 			children,
-			label,
-			source: catSource(...children)
+			label
+			// source: catSource(...children)
 		};
 	};
 }
@@ -86,8 +86,8 @@ export function makeRoseOptional(label: Label): (children: [Tree[]]) => Tree {
 		return {
 			type: 'rose',
 			children,
-			label,
-			source: catSource(...children)
+			label
+			// source: catSource(...children)
 		};
 	};
 }
@@ -101,16 +101,16 @@ export function makeRoseFromBranch(
 			return {
 				type: 'rose',
 				children: [left, ...right.children],
-				label,
-				source: catSource(left, right)
+				label
+				// source: catSource(left, right)
 			};
 		}
 
 		return {
 			type: 'rose',
 			children: [left, right],
-			label,
-			source: catSource(left, right)
+			label
+			// source: catSource(left, right)
 		};
 	};
 }

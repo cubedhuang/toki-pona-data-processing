@@ -1,7 +1,7 @@
 {
 	"type": "module",
 	"scripts": {
-		"codegen": "bun run ./scripts/grammar-preprocessor.js grammar.ne grammar-processed.ne && nearleyc grammar-processed.ne -o grammar.ts",
+		"codegen": "bun run ./scripts/grammar-preprocessor.js ./src/parse/grammar.ne ./src/parse/grammar-processed.ne && nearleyc ./src/parse/grammar-processed.ne -o ./src/parse/grammar.ts",
 		"format": "prettier --write --cache ."
 	},
 	"dependencies": {

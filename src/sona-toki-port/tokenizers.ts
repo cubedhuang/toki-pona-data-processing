@@ -177,7 +177,7 @@ export class WordTokenizerRe extends RegexTokenizer {
 }
 
 /**
- * Sentence tokenizer
+ * Sentence tokenizer - FIXED VERSION
  */
 export class SentTokenizer implements Tokenizer {
 	protected delimiters: Set<string>;
@@ -200,66 +200,72 @@ export class SentTokenizer implements Tokenizer {
 			return [];
 		}
 
+		// Split directly on newlines first to ensure line breaks are respected
+		const lines = s.split('\n');
 		const tokens: string[] = [];
-		const slen = s.length;
-		let lastMatch = 0;
-		let i = 0;
 
-		while (i < slen) {
-			// Handle cartouche special case
-			if (s[i] === UCSUR_CARTOUCHE_LEFT) {
-				const rightI = s.indexOf(UCSUR_CARTOUCHE_RIGHT, i);
-				const contained = new Set<string>();
-
-				if (rightI > 0) {
-					for (let j = i + 1; j < rightI; j++) {
-						contained.add(s[j]);
-					}
-				}
-
-				// Check if it contains only non-cartouche UCSUR chars
-				const isAllUCSUR = [...contained].every((char) =>
-					UCSUR_MINUS_CARTOUCHE.has(char)
-				);
-				if (contained.size > 0 && isAllUCSUR) {
-					i = rightI + 1;
-					continue;
-				}
-			}
-
-			if (!this.delimiters.has(s[i])) {
-				i++;
+		for (const line of lines) {
+			// Skip empty lines
+			if (!line.trim()) {
 				continue;
 			}
 
-			if (this.intraWordPunct.has(s[i])) {
-				const prev = i > 0 ? s[i - 1] : '';
-				const next = i + 1 < slen ? s[i + 1] : '';
+			// For each line, extract sentences
+			let currentSentence = '';
+			let i = 0;
+			const lineLength = line.length;
 
-				if (
-					prev &&
-					next &&
-					!this.allPunct.has(prev) &&
-					!this.allPunct.has(next)
-				) {
-					i += 2;
-					continue;
+			while (i < lineLength) {
+				currentSentence += line[i];
+
+				// Handle UCSUR cartouche special case
+				if (line[i] === UCSUR_CARTOUCHE_LEFT) {
+					const rightI = line.indexOf(UCSUR_CARTOUCHE_RIGHT, i);
+					if (rightI > 0) {
+						// Add the content between cartouches
+						currentSentence += line.substring(i + 1, rightI + 1);
+						i = rightI + 1;
+						continue;
+					}
 				}
+
+				// Check if the current character is a sentence delimiter
+				if (this.delimiters.has(line[i])) {
+					// Handle intra-word punctuation case (like periods in abbreviations)
+					if (this.intraWordPunct.has(line[i])) {
+						const prev = i > 0 ? line[i - 1] : '';
+						const next = i + 1 < lineLength ? line[i + 1] : '';
+
+						// If punctuation is inside a word (between two non-punctuation characters), continue
+						if (
+							prev &&
+							next &&
+							!this.allPunct.has(prev) &&
+							!this.allPunct.has(next)
+						) {
+							i++;
+							continue;
+						}
+					}
+
+					// Add the current sentence if it's not empty after trimming
+					const trimmedSentence = currentSentence.trim();
+					if (trimmedSentence) {
+						tokens.push(trimmedSentence);
+					}
+
+					// Reset current sentence
+					currentSentence = '';
+				}
+
+				i++;
 			}
 
-			const match = s.substring(lastMatch, i + 1).trim();
-			lastMatch = i + 1;
-
-			if (match) {
-				tokens.push(match);
+			// Add any remaining text from the line as a sentence
+			const finalSentence = currentSentence.trim();
+			if (finalSentence) {
+				tokens.push(finalSentence);
 			}
-
-			i++;
-		}
-
-		const finalMatch = s.substring(lastMatch).trim();
-		if (finalMatch) {
-			tokens.push(finalMatch);
 		}
 
 		return tokens;
