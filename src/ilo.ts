@@ -1,4 +1,4 @@
-import { Ilo, SentNoOp, createCorpusConfig } from "./sona-toki-port";
+import { Ilo, SentNoOp, createCorpusConfig } from './sona-toki-port';
 
 const corpusConfig = createCorpusConfig();
 export const ilo = new Ilo(

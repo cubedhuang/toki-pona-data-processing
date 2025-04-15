@@ -1,6 +1,6 @@
 // TypeScript equivalent of Configs.py (refactored to use instance methods)
 
-import { Cleaner, ConsecutiveDuplicates } from "./cleaners";
+import { Cleaner, ConsecutiveDuplicates } from './cleaners';
 import {
 	Alphabetic,
 	And,
@@ -26,38 +26,38 @@ import {
 	createNimiLinkuObscure,
 	createNimiLinkuSandbox,
 	createNimiLinkuUncommon
-} from "./filters";
+} from './filters';
 import {
 	Preprocessor,
 	URLs,
 	createRecommendedPreprocessors
-} from "./preprocessors";
-import { PassFail, Scorer, SoftPassFail, SoftScaling } from "./scorers";
-import { Tokenizer, WordTokenizerRe } from "./tokenizers";
-import { Number } from "./types";
+} from './preprocessors';
+import { PassFail, Scorer, SoftPassFail, SoftScaling } from './scorers';
+import { Tokenizer, WordTokenizerRe } from './tokenizers';
+import { Number } from './types';
 
 /**
  * Dictionary of phonomatches to exclude from corpus config
  */
 const DICT_PHONOMATCHES: Set<string> = new Set([
-	"aka", // also known as
-	"an", // article
-	"api", // API
-	"i", // 1st person
-	"je", // 1st person pronoun, french
-	"kana", // japanese script
-	"me", // 1st person singular, english
-	"ne", // "no" in several languages
-	"nu", // "new" in english, "now" in dutch
-	"omen", // ominous
-	"se", // spanish particle, english "see"
-	"sole", // singular, of shoe
-	"take", // acquire
-	"ten", // 10
-	"to", // to, too
-	"u", // no u
-	"we", // 1st person plural, english
-	"wi" // wii and discussions of syllables
+	'aka', // also known as
+	'an', // article
+	'api', // API
+	'i', // 1st person
+	'je', // 1st person pronoun, french
+	'kana', // japanese script
+	'me', // 1st person singular, english
+	'ne', // "no" in several languages
+	'nu', // "new" in english, "now" in dutch
+	'omen', // ominous
+	'se', // spanish particle, english "see"
+	'sole', // singular, of shoe
+	'take', // acquire
+	'ten', // 10
+	'to', // to, too
+	'u', // no u
+	'we', // 1st person plural, english
+	'wi' // wii and discussions of syllables
 ]);
 
 /**

@@ -11,20 +11,20 @@ export interface Scorecard {
 }
 
 export type LinkuUsageDate =
-	| "2020-04"
-	| "2021-10"
-	| "2022-08"
-	| "2023-09"
-	| "2024-09";
+	| '2020-04'
+	| '2021-10'
+	| '2022-08'
+	| '2023-09'
+	| '2024-09';
 
 export type LinkuUsageCategory =
-	| "core"
-	| "common"
-	| "uncommon"
-	| "obscure"
-	| "sandbox";
+	| 'core'
+	| 'common'
+	| 'uncommon'
+	| 'obscure'
+	| 'sandbox';
 
-export type LinkuBooks = "pu" | "ku suli" | "ku lili" | "none";
+export type LinkuBooks = 'pu' | 'ku suli' | 'ku lili' | 'none';
 
 export interface LinkuWord {
 	id: string;

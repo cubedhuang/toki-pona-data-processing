@@ -8,7 +8,7 @@ export async function readFileByLine(
 	const stream = foo.stream();
 	const decoder = new TextDecoder();
 
-	let remainingData = "";
+	let remainingData = '';
 
 	for await (const chunk of stream) {
 		const str = decoder.decode(chunk);

@@ -23,7 +23,7 @@
  * be contained in one line and only refer to at most one generic variable.
  */
 
-import * as fs from "node:fs";
+import * as fs from 'node:fs';
 
 interface Definition {
 	lineIndex: number;
@@ -105,10 +105,10 @@ export function preprocess(lines: string[], flags_?: Set<string>): string[] {
 			generics.set(typeName, generics.get(typeName) || []);
 			generics.get(typeName)!.push({ lineIndex, line });
 			const dependencies = line
-				.split("->")[1]
+				.split('->')[1]
 				.split(/\s+/)
-				.filter(x => x.endsWith(`<${typeParam}>`))
-				.map(x => x.split("<")[0]);
+				.filter((x) => x.endsWith(`<${typeParam}>`))
+				.map((x) => x.split('<')[0]);
 			for (const dep of dependencies) merge(typeName, dep);
 			expanded.push([]);
 		} else {
@@ -131,9 +131,9 @@ function main(): void {
 
 	if (args.length < 2) {
 		console.error(
-			"Usage:\n\n" +
+			'Usage:\n\n' +
 				`    export KUNA_FLAGS="FOO BAR"\n` +
-				"    npx esr src/grammar-preprocessor.ts input.kuna.ne output.ne\n"
+				'    npx esr src/grammar-preprocessor.ts input.kuna.ne output.ne\n'
 		);
 		process.exit(1);
 	}
@@ -141,18 +141,18 @@ function main(): void {
 	const inputPath = args[0];
 	const outputPath = args[1];
 	const flags = new Set(
-		[...(process.env.KUNA_FLAGS ?? "").split(/\s+/)].filter(x => x)
+		[...(process.env.KUNA_FLAGS ?? '').split(/\s+/)].filter((x) => x)
 	);
 	console.log(
 		`🍳 Preprocessing ${inputPath} into ${outputPath} with flags:`,
 		[...flags]
 	);
 
-	const contents: string = fs.readFileSync(inputPath, "utf-8");
-	const converted = preprocess(contents.trim().split("\n"), flags);
+	const contents: string = fs.readFileSync(inputPath, 'utf-8');
+	const converted = preprocess(contents.trim().split('\n'), flags);
 
-	fs.writeFileSync(outputPath, `${converted.join("\n")}\n`, "utf-8");
-	console.log("✨ Preprocessing complete.");
+	fs.writeFileSync(outputPath, `${converted.join('\n')}\n`, 'utf-8');
+	console.log('✨ Preprocessing complete.');
 }
 
 if (process.argv[1] === import.meta.url.substring(7)) {

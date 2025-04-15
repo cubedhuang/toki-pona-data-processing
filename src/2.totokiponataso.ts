@@ -1,6 +1,5 @@
-import { ilo } from "./ilo";
-import { RawMessage, ScoredMessage } from "./types";
-import { readFileByLine } from "./utils";
+import { ScoredMessage } from './types';
+import { readFileByLine } from './utils';
 
 /*
 sona-mute does this:
@@ -28,14 +27,14 @@ alias NonTPUserSentence := (
  */
 
 async function main() {
-	const output = Bun.file("./files/2.tokiponataso.jsonl");
-	Bun.write(output, ""); // Clear the file before writing
+	const output = Bun.file('./files/2.tokiponataso.jsonl');
+	Bun.write(output, ''); // Clear the file before writing
 	const writer = output.writer();
 
 	let i = 0;
 
-	await readFileByLine("./files/1.scoredmessages.jsonl", line => {
-		if (line.trim() === "") {
+	await readFileByLine('./files/1.scoredmessages.jsonl', (line) => {
+		if (line.trim() === '') {
 			return;
 		}
 
@@ -46,7 +45,7 @@ async function main() {
 		}
 
 		message.sentences = message.sentences.filter(
-			sentence =>
+			(sentence) =>
 				sentence.score >= 0.8 &&
 				(sentence.words.length >= 3 || message.score >= 0.3)
 		);
@@ -55,7 +54,7 @@ async function main() {
 			return;
 		}
 
-		writer.write(JSON.stringify(message) + "\n");
+		writer.write(JSON.stringify(message) + '\n');
 
 		if (i++ % 1000 === 0) {
 			console.log(`Processed ${i} messages`);

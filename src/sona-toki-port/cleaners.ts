@@ -14,7 +14,7 @@ export class RegexCleaner implements Cleaner {
 	protected pattern: RegExp;
 	protected replace: string;
 
-	constructor(pattern: RegExp, replace: string = "") {
+	constructor(pattern: RegExp, replace: string = '') {
 		this.pattern = pattern;
 		this.replace = replace;
 	}
@@ -60,7 +60,7 @@ export class ConsecutiveDuplicates implements Cleaner {
  */
 export class ConsecutiveDuplicatesRe extends RegexCleaner {
 	constructor() {
-		super(/(.)\1+/gi, "$1");
+		super(/(.)\1+/gi, '$1');
 	}
 }
 

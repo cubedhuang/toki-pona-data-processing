@@ -9,8 +9,8 @@ import {
 	UCSUR_CARTOUCHE_RIGHT,
 	UCSUR_MINUS_CARTOUCHE,
 	UNICODE_WHITESPACE
-} from "./constants";
-import { regexEscape } from "./utils";
+} from './constants';
+import { regexEscape } from './utils';
 
 /**
  * Base Tokenizer interface
@@ -45,8 +45,8 @@ export class RegexTokenizer implements Tokenizer {
 	tokenize(s: string): string[] {
 		return s
 			.split(this.pattern)
-			.map(word => word.trim())
-			.filter(word => word.length > 0);
+			.map((word) => word.trim())
+			.filter((word) => word.length > 0);
 	}
 }
 
@@ -123,7 +123,7 @@ export class WordTokenizer implements Tokenizer {
 					continue;
 				}
 
-				const nextChar = i + 1 < slen ? s[i + 1] : "";
+				const nextChar = i + 1 < slen ? s[i + 1] : '';
 				if (this.intraWordPunct.has(nextChar)) {
 					didSkip = true;
 					i += 2;
@@ -172,7 +172,7 @@ export class WordTokenizer implements Tokenizer {
  */
 export class WordTokenizerRe extends RegexTokenizer {
 	constructor() {
-		super(new RegExp(`([${ALL_PUNCT_RANGES_STR}]+|\\s+)`, "g"));
+		super(new RegExp(`([${ALL_PUNCT_RANGES_STR}]+|\\s+)`, 'g'));
 	}
 }
 
@@ -189,7 +189,7 @@ export class SentTokenizer implements Tokenizer {
 		intraWordPunct?: Set<string>,
 		allPunct?: Set<string>
 	) {
-		this.delimiters = delimiters || new Set([...ALL_SENTENCE_PUNCT, "\n"]);
+		this.delimiters = delimiters || new Set([...ALL_SENTENCE_PUNCT, '\n']);
 		this.intraWordPunct = intraWordPunct || new Set(INTRA_WORD_PUNCT);
 		this.allPunct =
 			allPunct || new Set([...ALL_PUNCT, ...UNICODE_WHITESPACE]);
@@ -218,7 +218,7 @@ export class SentTokenizer implements Tokenizer {
 				}
 
 				// Check if it contains only non-cartouche UCSUR chars
-				const isAllUCSUR = [...contained].every(char =>
+				const isAllUCSUR = [...contained].every((char) =>
 					UCSUR_MINUS_CARTOUCHE.has(char)
 				);
 				if (contained.size > 0 && isAllUCSUR) {
@@ -233,8 +233,8 @@ export class SentTokenizer implements Tokenizer {
 			}
 
 			if (this.intraWordPunct.has(s[i])) {
-				const prev = i > 0 ? s[i - 1] : "";
-				const next = i + 1 < slen ? s[i + 1] : "";
+				const prev = i > 0 ? s[i - 1] : '';
+				const next = i + 1 < slen ? s[i + 1] : '';
 
 				if (
 					prev &&
@@ -271,6 +271,6 @@ export class SentTokenizer implements Tokenizer {
  */
 export class SentTokenizerRe extends RegexTokenizer {
 	constructor() {
-		super(new RegExp(`(?<=[${regexEscape(ALL_SENTENCE_PUNCT)}])|$`, "m"));
+		super(new RegExp(`(?<=[${regexEscape(ALL_SENTENCE_PUNCT)}])|$`, 'm'));
 	}
 }

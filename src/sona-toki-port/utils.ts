@@ -1,6 +1,6 @@
 // TypeScript equivalent of utils.py
 
-const TO_ESCAPE = ["\\", "^", "[", "]", "-"];
+const TO_ESCAPE = ['\\', '^', '[', ']', '-'];
 
 /**
  * Prepare a dictionary of words by applying cleaners
@@ -46,7 +46,7 @@ export function removeConsecutiveDuplicates(token: string): string {
 export function regexEscape(s: string): string {
 	let result = s;
 	for (const c of TO_ESCAPE) {
-		result = result.replace(new RegExp(`\\${c}`, "g"), `\\${c}`);
+		result = result.replace(new RegExp(`\\${c}`, 'g'), `\\${c}`);
 	}
 	return result;
 }
@@ -56,11 +56,11 @@ export function regexEscape(s: string): string {
  */
 function toRange(start: number, prev: number): string {
 	if (start === prev) {
-		return `\\u{${start.toString(16).padStart(8, "0")}}`;
+		return `\\u{${start.toString(16).padStart(8, '0')}}`;
 	}
-	return `\\u{${start.toString(16).padStart(8, "0")}}-\\u{${prev
+	return `\\u{${start.toString(16).padStart(8, '0')}}-\\u{${prev
 		.toString(16)
-		.padStart(8, "0")}}`;
+		.padStart(8, '0')}}`;
 }
 
 /**
@@ -101,14 +101,14 @@ export function findUnicodeChars(ranges: string[]): string {
 	const result: string[] = [];
 
 	for (const item of ranges) {
-		if (item.includes("-")) {
-			const [startStr, endStr] = item.split("-");
+		if (item.includes('-')) {
+			const [startStr, endStr] = item.split('-');
 			const start = parseInt(
-				startStr.replace("\\u{", "").replace("}", ""),
+				startStr.replace('\\u{', '').replace('}', ''),
 				16
 			);
 			const end = parseInt(
-				endStr.replace("\\u{", "").replace("}", ""),
+				endStr.replace('\\u{', '').replace('}', ''),
 				16
 			);
 
@@ -117,14 +117,14 @@ export function findUnicodeChars(ranges: string[]): string {
 			}
 		} else {
 			const codePoint = parseInt(
-				item.replace("\\u{", "").replace("}", ""),
+				item.replace('\\u{', '').replace('}', ''),
 				16
 			);
 			result.push(String.fromCodePoint(codePoint));
 		}
 	}
 
-	return result.join("");
+	return result.join('');
 }
 
 /**
@@ -165,7 +165,7 @@ export function overlappingNtuples<T>(
 	}
 
 	// Find the shortest length
-	const minLength = Math.min(...arrays.map(a => a.length));
+	const minLength = Math.min(...arrays.map((a) => a.length));
 
 	// Create the n-tuples
 	const result: Array<T[]> = [];

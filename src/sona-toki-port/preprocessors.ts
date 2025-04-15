@@ -16,7 +16,7 @@ export class RegexPreprocessor implements Preprocessor {
 	protected pattern: RegExp;
 	protected replace: string;
 
-	constructor(pattern: RegExp, replace: string = " ") {
+	constructor(pattern: RegExp, replace: string = ' ') {
 		this.pattern = pattern;
 		this.replace = replace;
 	}
@@ -42,7 +42,7 @@ export class URLs extends RegexPreprocessor {
  */
 export class MarkdownURLs extends RegexPreprocessor {
 	constructor() {
-		super(/\[(.+?)\]\(https?:\/\/\S+\)/g, "$1");
+		super(/\[(.+?)\]\(https?:\/\/\S+\)/g, '$1');
 	}
 }
 
@@ -187,7 +187,7 @@ export class AllQuotes extends RegexPreprocessor {
 		super(
 			new RegExp(
 				`${singleQuotes}|${doubleQuotes}|${backticks}|${arrowQuote}`,
-				"gms"
+				'gms'
 			)
 		);
 	}
@@ -202,7 +202,7 @@ export class Emoji implements Preprocessor {
 		// This is a simplified placeholder
 		return msg.replace(
 			/[\u{1F600}-\u{1F64F}|\u{1F300}-\u{1F5FF}|\u{1F680}-\u{1F6FF}|\u{2600}-\u{26FF}|\u{2700}-\u{27BF}]/gu,
-			""
+			''
 		);
 	}
 }

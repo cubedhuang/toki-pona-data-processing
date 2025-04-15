@@ -1,11 +1,11 @@
 // TypeScript equivalent of ilo.py (refactored to use instance methods)
 
-import { Cleaner } from "./cleaners";
-import { Filter } from "./filters";
-import { Preprocessor } from "./preprocessors";
-import { Scorer, SentNoOp, SentenceScorer } from "./scorers";
-import { SentTokenizer, Tokenizer, WordTokenizer } from "./tokenizers";
-import { Number, Scorecard } from "./types";
+import { Cleaner } from './cleaners';
+import { Filter } from './filters';
+import { Preprocessor } from './preprocessors';
+import { Scorer, SentNoOp, SentenceScorer } from './scorers';
+import { SentTokenizer, Tokenizer, WordTokenizer } from './tokenizers';
+import { Number, Scorecard } from './types';
 
 /**
  * Main Ilo class for Toki Pona text analysis
@@ -214,6 +214,6 @@ export class Ilo {
 	areTokiPona(message: string): boolean[] {
 		const preprocessed = this.preprocess(message);
 		const scorecards = this.analyzeSentences(preprocessed);
-		return scorecards.map(card => card.score >= this.passingScore);
+		return scorecards.map((card) => card.score >= this.passingScore);
 	}
 }

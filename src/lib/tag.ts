@@ -1,13 +1,13 @@
-import type { Label, Tree, Word } from "../parse/types";
+import type { Label, Tree, Word } from '../parse/types';
 
 export const tags = [
-	"noun",
-	"verb",
-	"modifier",
-	"particle",
-	"preposition",
-	"preverb",
-	"interjection_head"
+	'noun',
+	'verb',
+	'modifier',
+	'particle',
+	'preposition',
+	'preverb',
+	'interjection_head'
 ] as const;
 
 export type Tag = (typeof tags)[number];
@@ -17,38 +17,40 @@ export interface TaggedWord {
 	tag: Tag;
 }
 
-const sContexts = ["interjection", "noun", "verbal"] as const;
+const sContexts = ['interjection', 'noun', 'verbal'] as const;
 type SContext = (typeof sContexts)[number];
 
-const nContexts = ["head", "modifier"] as const;
+const nContexts = ['head', 'modifier'] as const;
 type NContext = (typeof nContexts)[number];
 
 export function tagWords(
 	tree: Tree,
-	sContext: SContext = "interjection",
-	nContext: NContext = "modifier"
+	sContext: SContext = 'interjection',
+	nContext: NContext = 'modifier'
 ): TaggedWord[] {
-	if (tree.label.startsWith("clause") || tree.label === "object_phrase") {
-		sContext = "noun";
-	} else if (tree.label === "predicate") {
-		sContext = "verbal";
+	if (tree.label.startsWith('clause') || tree.label === 'object_phrase') {
+		sContext = 'noun';
+	} else if (tree.label === 'predicate') {
+		sContext = 'verbal';
 	}
 
-	if (tree.label === "head") {
-		nContext = "head";
+	if (tree.label === 'head') {
+		nContext = 'head';
 	}
 
 	switch (tree.type) {
-		case "branch":
+		case 'branch':
 			return [
 				...tagWords(tree.left, sContext, nContext),
 				...tagWords(tree.right, sContext, nContext)
 			];
-		case "labelled":
+		case 'labelled':
 			return tagWords(tree.tree, sContext, nContext);
-		case "rose":
-			return tree.children.flatMap(t => tagWords(t, sContext, nContext));
-		case "leaf":
+		case 'rose':
+			return tree.children.flatMap((t) =>
+				tagWords(t, sContext, nContext)
+			);
+		case 'leaf':
 			return [
 				{
 					word: tree.word,
@@ -56,7 +58,7 @@ export function tagWords(
 				}
 			];
 		default:
-			throw new Error("unreachable");
+			throw new Error('unreachable');
 	}
 }
 
@@ -66,21 +68,21 @@ function determineTag(
 	nContext: NContext
 ): Tag {
 	switch (label) {
-		case "prep":
-			return "preposition";
-		case "pv":
-			return "preverb";
-		case "cont":
-			if (nContext !== "head") {
-				return "modifier";
+		case 'prep':
+			return 'preposition';
+		case 'pv':
+			return 'preverb';
+		case 'cont':
+			if (nContext !== 'head') {
+				return 'modifier';
 			} else {
-				return sContext === "noun"
-					? "noun"
-					: sContext === "interjection"
-					? "interjection_head"
-					: "verb";
+				return sContext === 'noun'
+					? 'noun'
+					: sContext === 'interjection'
+						? 'interjection_head'
+						: 'verb';
 			}
 		default:
-			return "particle";
+			return 'particle';
 	}
 }

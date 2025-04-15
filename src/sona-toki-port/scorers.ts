@@ -1,7 +1,7 @@
 // TypeScript equivalent of Scorers.py (refactored to use instance methods)
 
-import { Filter, Pass } from "./filters";
-import { Number, Scorecard } from "./types";
+import { Filter, Pass } from './filters';
+import { Number, Scorecard } from './types';
 
 /**
  * Base Scorer interface
@@ -228,7 +228,7 @@ export class SentAvg implements SentenceScorer {
 		const total = scorecards.reduce((sum, card) => sum + card.score, 0);
 		const avg = total / scorecards.length;
 
-		return scorecards.map(card => ({
+		return scorecards.map((card) => ({
 			...card,
 			score: avg
 		}));
@@ -257,7 +257,7 @@ export class SentWeightedAvg implements SentenceScorer {
 
 		const weightedAvg = totalLen > 0 ? weightedTotal / totalLen : 0;
 
-		return scorecards.map(card => ({
+		return scorecards.map((card) => ({
 			...card,
 			score: weightedAvg
 		}));

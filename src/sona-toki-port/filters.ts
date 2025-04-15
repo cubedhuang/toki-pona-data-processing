@@ -13,9 +13,9 @@ import {
 	VOWELS,
 	wordsByTag,
 	wordsByUsage
-} from "./constants";
-import { LinkuBooks, LinkuUsageCategory, LinkuUsageDate } from "./types";
-import { prepDictionary } from "./utils";
+} from './constants';
+import { LinkuBooks, LinkuUsageCategory, LinkuUsageDate } from './types';
+import { prepDictionary } from './utils';
 
 /**
  * Base Filter interface
@@ -90,7 +90,7 @@ export class SubsetFilter implements Filter {
 	}
 
 	filter(token: string): boolean {
-		const tokenChars = new Set(token.toLowerCase().split(""));
+		const tokenChars = new Set(token.toLowerCase().split(''));
 
 		for (const char of tokenChars) {
 			if (!this.tokens.has(char)) {
@@ -168,7 +168,7 @@ export function createNimiLinkuByUsage(
  * Create filters for words by Linku tag
  */
 export function createNimiLinkuByTag(
-	tag: "usage_category" | "book",
+	tag: 'usage_category' | 'book',
 	category: LinkuUsageCategory | LinkuBooks
 ): MemberFilter {
 	const words = wordsByTag(tag, category);
@@ -177,35 +177,35 @@ export function createNimiLinkuByTag(
 
 // Predefined Linku filters (factory functions)
 export function createNimiPu(): MemberFilter {
-	return createNimiLinkuByTag("book", "pu");
+	return createNimiLinkuByTag('book', 'pu');
 }
 
 export function createNimiKuSuli(): MemberFilter {
-	return createNimiLinkuByTag("book", "ku suli");
+	return createNimiLinkuByTag('book', 'ku suli');
 }
 
 export function createNimiKuLili(): MemberFilter {
-	return createNimiLinkuByTag("book", "ku lili");
+	return createNimiLinkuByTag('book', 'ku lili');
 }
 
 export function createNimiLinkuCore(): MemberFilter {
-	return createNimiLinkuByTag("usage_category", "core");
+	return createNimiLinkuByTag('usage_category', 'core');
 }
 
 export function createNimiLinkuCommon(): MemberFilter {
-	return createNimiLinkuByTag("usage_category", "common");
+	return createNimiLinkuByTag('usage_category', 'common');
 }
 
 export function createNimiLinkuUncommon(): MemberFilter {
-	return createNimiLinkuByTag("usage_category", "uncommon");
+	return createNimiLinkuByTag('usage_category', 'uncommon');
 }
 
 export function createNimiLinkuObscure(): MemberFilter {
-	return createNimiLinkuByTag("usage_category", "obscure");
+	return createNimiLinkuByTag('usage_category', 'obscure');
 }
 
 export function createNimiLinkuSandbox(): MemberFilter {
-	return createNimiLinkuByTag("usage_category", "sandbox");
+	return createNimiLinkuByTag('usage_category', 'sandbox');
 }
 
 /**
@@ -234,7 +234,7 @@ export class Phonotactic extends RegexFilter {
 		super(
 			new RegExp(
 				`^((^[${VOWELS}]|[klmnps][${VOWELS}]|[jt][aeou]|[w][aei])(n(?![mn]))?)+$|^n$`,
-				"i"
+				'i'
 			)
 		);
 	}
@@ -248,7 +248,7 @@ export class Syllabic extends RegexFilter {
 		super(
 			new RegExp(
 				`^(?:^[${VOWELS}]n?)?(?:[${CONSONANTS}][${VOWELS}]n?)*$|^n$`,
-				"i"
+				'i'
 			)
 		);
 	}
@@ -268,7 +268,7 @@ export class Alphabetic extends SubsetFilter {
  */
 export class AlphabeticRe extends RegexFilter {
 	constructor() {
-		super(new RegExp(`[${ALPHABET}]+`, "i"));
+		super(new RegExp(`[${ALPHABET}]+`, 'i'));
 	}
 }
 
@@ -343,7 +343,7 @@ export class Or implements Filter {
 
 	constructor(...filters: Filter[]) {
 		if (filters.length < 2) {
-			throw new Error("Provide at least two Filters to Or constructor.");
+			throw new Error('Provide at least two Filters to Or constructor.');
 		}
 		this.filters = filters;
 
@@ -353,17 +353,17 @@ export class Or implements Filter {
 
 	private optimizeMemberFilters(): void {
 		const memberFilters = this.filters.filter(
-			f => f instanceof MemberFilter
+			(f) => f instanceof MemberFilter
 		) as MemberFilter[];
 		const otherFilters = this.filters.filter(
-			f => !(f instanceof MemberFilter)
+			(f) => !(f instanceof MemberFilter)
 		);
 
 		if (memberFilters.length >= 2) {
 			// Combine all member filters into one
 			const allTokens = new Set<string>();
 			for (const filter of memberFilters) {
-				filter["tokens"].forEach(token => allTokens.add(token));
+				filter['tokens'].forEach((token) => allTokens.add(token));
 			}
 
 			const combinedMemberFilter = new MemberFilter(allTokens);
@@ -391,7 +391,7 @@ export class And implements Filter {
 
 	constructor(...filters: Filter[]) {
 		if (filters.length < 2) {
-			throw new Error("Provide at least two Filters to And constructor.");
+			throw new Error('Provide at least two Filters to And constructor.');
 		}
 		this.filters = filters;
 	}
