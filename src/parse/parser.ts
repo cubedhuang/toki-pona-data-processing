@@ -5,10 +5,12 @@ import type { Label, Tree } from './types';
 
 export type Result = { tree: Tree; score: number };
 
-export function parse(text: string) {
-	const parser = new nearley.Parser(
-		nearley.Grammar.fromCompiled(grammar)
-	).feed(text);
+export function parseSentence(words: string[]): Result[] {
+	const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
+
+	for (const word of words) {
+		parser.feed(word);
+	}
 
 	const results = sortResults(parser.results);
 
