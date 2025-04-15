@@ -10,7 +10,7 @@ export const tokenTypes = [
 	'word_preposition',
 	'word_preverb',
 	'word_number',
-	'word_modifier_only', // kin and names
+	'word_modifier_only', // names
 	'word_unmarked_subject' // mi, sina
 ] as const;
 
@@ -62,9 +62,7 @@ export class TokiPonaLexer implements Lexer {
 
 		let type: TokenType = 'word_content';
 
-		if (linkuWords.includes(value.toLowerCase())) {
-			type = 'word_content';
-		} else if (particles.includes(value)) {
+		if (particles.includes(value)) {
 			type = 'word_particle';
 		} else if (prepositions.includes(value)) {
 			type = 'word_preposition';
@@ -72,7 +70,10 @@ export class TokiPonaLexer implements Lexer {
 			type = 'word_preverb';
 		} else if (numbers.includes(value)) {
 			type = 'word_number';
-		} else if (value[0] === value[0].toUpperCase()) {
+		} else if (
+			value[0] === value[0].toUpperCase() &&
+			!linkuWords.includes(value.toLowerCase())
+		) {
 			type = 'word_modifier_only';
 		} else if (unmarkedSubjects.includes(value)) {
 			type = 'word_unmarked_subject';
