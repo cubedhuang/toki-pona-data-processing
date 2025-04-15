@@ -1,3 +1,4 @@
+import { TaggedWord } from './lib/tag';
 import { Tree } from './parse/types';
 
 // part 1: raw data
@@ -22,4 +23,13 @@ export type ScoredSentence = {
 export type ParsedMessage = {
 	id: string;
 	sentences: Tree[];
+};
+
+// part 4: tagged words
+export type TaggedMessage = {
+	id: string;
+	sentences: TaggedSentence[];
+};
+export type TaggedSentence = {
+	words: TaggedWord[];
 };

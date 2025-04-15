@@ -2,7 +2,8 @@ import type { Label, Tree, Word } from '../parse/types';
 
 export const tags = [
 	'noun',
-	'verb',
+	'tverb',
+	'iverb',
 	'modifier',
 	'particle',
 	'preposition',
@@ -17,7 +18,7 @@ export interface TaggedWord {
 	tag: Tag;
 }
 
-const sContexts = ['interjection', 'noun', 'verbal'] as const;
+const sContexts = ['interjection', 'noun', 'iverbal', 'tverbal'] as const;
 type SContext = (typeof sContexts)[number];
 
 const nContexts = ['head', 'modifier'] as const;
@@ -30,8 +31,13 @@ export function tagWords(
 ): TaggedWord[] {
 	if (tree.label.startsWith('clause') || tree.label === 'object_phrase') {
 		sContext = 'noun';
-	} else if (tree.label === 'predicate') {
-		sContext = 'verbal';
+	} else if (tree.label === 'verb_phrase_transitive') {
+		sContext = 'tverbal';
+	} else if (
+		tree.label === 'verb_phrase_intransitive' ||
+		tree.label === 'verb_phrase_prepositional'
+	) {
+		sContext = 'iverbal';
 	}
 
 	if (tree.label === 'head') {
@@ -80,7 +86,9 @@ function determineTag(
 					? 'noun'
 					: sContext === 'interjection'
 						? 'interjection_head'
-						: 'verb';
+						: sContext === 'tverbal'
+							? 'tverb'
+							: 'iverb';
 			}
 		default:
 			return 'particle';

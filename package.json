@@ -5,6 +5,7 @@
 		"format": "prettier --write --cache ."
 	},
 	"dependencies": {
+		"discord-snowflake": "^2.0.0",
 		"nearley": "^2.20.1"
 	},
 	"devDependencies": {
