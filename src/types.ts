@@ -36,7 +36,7 @@ export type TaggedSentence = {
 
 // part 5: tagged counts
 // map from year to counts
-export type TaggedCounts = Record<string, TaggedWordCounts[]>;
+export type TaggedCounts = Record<string, Record<string, TaggedWordCounts>>;
 export type TaggedWordCounts = {
 	word: string;
 	counts: Record<Tag, number>;

@@ -47,7 +47,7 @@ async function main() {
 			for (const taggedWord of sentence.words) {
 				const word = taggedWord.word.text.toLowerCase();
 
-				// if (word === 'a' && taggedWord.tag === 'noun') {
+				// if (word === 'jo' && taggedWord.tag === 'modifier') {
 				// 	console.log(
 				// 		sentence.words.map((w) => w.word.text).join(' ')
 				// 	);
@@ -81,7 +81,7 @@ async function main() {
 			}))
 			.filter(({ total }) => total >= 30);
 
-		output[year] = sortedWords;
+		output[year] = Object.fromEntries(sortedWords.map((w) => [w.word, w]));
 	}
 
 	await Bun.write(
