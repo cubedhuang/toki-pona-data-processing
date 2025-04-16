@@ -1,20 +1,22 @@
 import { parseSentence } from './parse/parser';
 import { Tree } from './parse/types';
 import { ParsedMessage, ScoredMessage, ScoredSentence } from './types';
-import { readFileByLine } from './utils';
+import { fileAddon, readFileByLine } from './utils';
 
 async function main() {
-	const successOutput = Bun.file('./files/3.trees.jsonl');
+	const successOutput = Bun.file(`./files/3.trees${fileAddon}.jsonl`);
 	Bun.write(successOutput, ''); // Clear the file before writing
 	const successWriter = successOutput.writer();
 
-	const failureOutput = Bun.file('./files/3.trees-failures.jsonl');
+	const failureOutput = Bun.file(
+		`./files/3.trees-failures${fileAddon}.jsonl`
+	);
 	Bun.write(failureOutput, ''); // Clear the file before writing
 	const failureWriter = failureOutput.writer();
 
 	let i = 0;
 
-	await readFileByLine('./files/2.tokiponataso.jsonl', (line) => {
+	await readFileByLine(`./files/2.tokiponataso${fileAddon}.jsonl`, (line) => {
 		if (line.trim() === '') {
 			return;
 		}
@@ -62,10 +64,7 @@ async function main() {
 		}
 	});
 
-	failureWriter.flush();
 	failureWriter.end();
-
-	successWriter.flush();
 	successWriter.end();
 }
 

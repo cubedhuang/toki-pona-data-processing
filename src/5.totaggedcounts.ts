@@ -1,3 +1,5 @@
+import { getTimestamp } from 'discord-snowflake';
+
 import { Tag, tagWords } from './lib/tag';
 import {
 	ParsedMessage,
@@ -5,7 +7,7 @@ import {
 	ScoredMessage,
 	TaggedMessage
 } from './types';
-import { readFileByLine } from './utils';
+import { fileAddon, readFileByLine } from './utils';
 
 function createCounts(): Record<Tag, number> {
 	return {
@@ -21,20 +23,42 @@ function createCounts(): Record<Tag, number> {
 }
 
 async function main() {
-	const words: Record<string, Record<Tag, number>> = {};
+	// const words: Record<string, Record<Tag, number>> = {};
+	const years: Record<number, Record<string, Record<Tag, number>>> = {};
 
 	let i = 0;
 
-	await readFileByLine('./files/4.tagged.jsonl', (line) => {
+	await readFileByLine(`./files/4.tagged${fileAddon}.jsonl`, (line) => {
 		if (line.trim() === '') {
 			return;
 		}
 
 		const message: TaggedMessage = JSON.parse(line);
 
+		let year: string;
+
+		if (fileAddon === '.poki') {
+			year = message.id.split('-')[0];
+		} else {
+			const date = new Date(getTimestamp(message.id as `${bigint}`));
+			year = date.getFullYear().toString();
+		}
+
+		if (!(year in years)) {
+			years[year] = {};
+		}
+		const words = years[year];
+
 		for (const sentence of message.sentences) {
 			for (const taggedWord of sentence.words) {
 				const word = taggedWord.word.text.toLowerCase();
+
+				if (word === 'luka' && taggedWord.tag === 'particle') {
+					console.log(
+						sentence.words.map((w) => w.word.text).join(' ')
+					);
+				}
+
 				if (word in words) {
 					words[word][taggedWord.tag]++;
 				} else {
@@ -49,19 +73,21 @@ async function main() {
 		}
 	});
 
-	const sortedWords = Object.entries(words)
-		.sort(([nameA], [nameB]) => nameA.localeCompare(nameB))
-		.map(([word, counts]) => ({
-			word,
-			counts,
-			total: Object.values(counts).reduce((a, b) => a + b, 0)
-		}))
-		.filter(({ total }) => total >= 30);
+	for (const [year, words] of Object.entries(years)) {
+		const sortedWords = Object.entries(words)
+			.sort(([nameA], [nameB]) => nameA.localeCompare(nameB))
+			.map(([word, counts]) => ({
+				word,
+				counts,
+				total: Object.values(counts).reduce((a, b) => a + b, 0)
+			}))
+			.filter(({ total }) => total >= 30);
 
-	await Bun.write(
-		'./files/4.taggedcounts.json',
-		JSON.stringify(sortedWords, null, 2)
-	);
+		await Bun.write(
+			`./files/5.taggedcounts.${year}${fileAddon}.json`,
+			JSON.stringify(sortedWords, null, 2)
+		);
+	}
 }
 
 main();

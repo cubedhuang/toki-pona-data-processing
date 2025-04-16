@@ -1,15 +1,15 @@
 import { ilo } from './ilo';
 import { RawMessage, ScoredMessage } from './types';
-import { readFileByLine } from './utils';
+import { fileAddon, readFileByLine } from './utils';
 
 async function main() {
-	const output = Bun.file('./files/1.scoredmessages.jsonl');
+	const output = Bun.file(`./files/1.scoredmessages${fileAddon}.jsonl`);
 	Bun.write(output, ''); // Clear the file before writing
 	const writer = output.writer();
 
 	let i = 0;
 
-	await readFileByLine('./files/aggregated.jsonl', (line) => {
+	await readFileByLine(`./files/aggregated${fileAddon}.jsonl`, (line) => {
 		if (line.trim() === '') {
 			return;
 		}

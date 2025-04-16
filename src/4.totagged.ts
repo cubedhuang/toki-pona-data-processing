@@ -5,7 +5,7 @@ import {
 	ScoredMessage,
 	TaggedMessage
 } from './types';
-import { readFileByLine } from './utils';
+import { fileAddon, readFileByLine } from './utils';
 
 function createCounts(): Record<Tag, number> {
 	return {
@@ -21,13 +21,13 @@ function createCounts(): Record<Tag, number> {
 }
 
 async function main() {
-	const output = Bun.file('./files/4.tagged.jsonl');
+	const output = Bun.file(`./files/4.tagged${fileAddon}.jsonl`);
 	Bun.write(output, ''); // Clear the file before writing
 	const writer = output.writer();
 
 	let i = 0;
 
-	await readFileByLine('./files/3.trees.jsonl', (line) => {
+	await readFileByLine(`./files/3.trees${fileAddon}.jsonl`, (line) => {
 		if (line.trim() === '') {
 			return;
 		}

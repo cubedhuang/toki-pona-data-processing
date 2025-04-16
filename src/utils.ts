@@ -28,3 +28,6 @@ export async function readFileByLine(
 
 	return onFinish?.();
 }
+
+const qualifier = process.argv[2];
+export const fileAddon = qualifier ? '.' + qualifier : '';

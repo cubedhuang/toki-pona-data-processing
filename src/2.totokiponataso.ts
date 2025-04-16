@@ -1,5 +1,5 @@
 import { ScoredMessage } from './types';
-import { readFileByLine } from './utils';
+import { fileAddon, readFileByLine } from './utils';
 
 /*
 sona-mute does this:
@@ -27,39 +27,42 @@ alias NonTPUserSentence := (
  */
 
 async function main() {
-	const output = Bun.file('./files/2.tokiponataso.jsonl');
+	const output = Bun.file(`./files/2.tokiponataso${fileAddon}.jsonl`);
 	Bun.write(output, ''); // Clear the file before writing
 	const writer = output.writer();
 
 	let i = 0;
 
-	await readFileByLine('./files/1.scoredmessages.jsonl', (line) => {
-		if (line.trim() === '') {
-			return;
+	await readFileByLine(
+		`./files/1.scoredmessages${fileAddon}.jsonl`,
+		(line) => {
+			if (line.trim() === '') {
+				return;
+			}
+
+			const message: ScoredMessage = JSON.parse(line);
+
+			if (message.score < 0.1) {
+				return;
+			}
+
+			message.sentences = message.sentences.filter(
+				(sentence) =>
+					sentence.score >= 0.8 &&
+					(sentence.words.length >= 3 || message.score >= 0.3)
+			);
+
+			if (message.sentences.length === 0) {
+				return;
+			}
+
+			writer.write(JSON.stringify(message) + '\n');
+
+			if (i++ % 1000 === 0) {
+				console.log(`Processed ${i} messages`);
+			}
 		}
-
-		const message: ScoredMessage = JSON.parse(line);
-
-		if (message.score < 0.1) {
-			return;
-		}
-
-		message.sentences = message.sentences.filter(
-			(sentence) =>
-				sentence.score >= 0.8 &&
-				(sentence.words.length >= 3 || message.score >= 0.3)
-		);
-
-		if (message.sentences.length === 0) {
-			return;
-		}
-
-		writer.write(JSON.stringify(message) + '\n');
-
-		if (i++ % 1000 === 0) {
-			console.log(`Processed ${i} messages`);
-		}
-	});
+	);
 
 	writer.flush();
 	writer.end();
