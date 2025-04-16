@@ -57,7 +57,7 @@ function scoreTree(tree: Tree): number {
 		tree.type === 'labelled' &&
 		tree.label === 'head' &&
 		tree.tree.type === 'leaf' &&
-		['ala', 'taso', 'kin'].includes(tree.tree.word.text)
+		['ala', 'taso', 'kin', 'n'].includes(tree.tree.word.text)
 	) {
 		score -= 1.5;
 	}

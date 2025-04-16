@@ -59,7 +59,6 @@ const grammar: Grammar = {
     {"name": "Vocative", "symbols": ["GeneralSubject", "WordVocativeMarker"], "postprocess": makeBranch("vocative")},
     {"name": "Sentence", "symbols": ["WordSentenceStarter", "Sentence"], "postprocess": makeBranch("clause")},
     {"name": "Sentence", "symbols": ["Context", "Sentence"], "postprocess": makeBranch("clause")},
-    {"name": "Sentence", "symbols": ["WordEmphasis", "Sentence"], "postprocess": makeBranch("clause")},
     {"name": "Sentence", "symbols": ["Clause_any"], "postprocess": id},
     {"name": "Context", "symbols": ["GeneralSubject", "WordContextMarker"], "postprocess": makeBranch("context_phrase")},
     {"name": "Context", "symbols": ["Clause_strict", "WordContextMarker"], "postprocess": makeBranch("context_clause")},
@@ -185,7 +184,11 @@ const grammar: Grammar = {
     {"name": "WordSentenceStarter", "symbols": [{"literal":"taso"}, "WordSentenceStarter$ebnf$1"], "postprocess": makeLeaf("start")},
     {"name": "WordSentenceStarter$ebnf$2", "symbols": ["WordEmphasis"], "postprocess": id},
     {"name": "WordSentenceStarter$ebnf$2", "symbols": [], "postprocess": () => null},
-    {"name": "WordSentenceStarter", "symbols": [{"literal":"kin"}, "WordSentenceStarter$ebnf$2"], "postprocess": makeLeaf("start")}
+    {"name": "WordSentenceStarter", "symbols": [{"literal":"kin"}, "WordSentenceStarter$ebnf$2"], "postprocess": makeLeaf("start")},
+    {"name": "WordSentenceStarter$ebnf$3", "symbols": ["WordEmphasis"], "postprocess": id},
+    {"name": "WordSentenceStarter$ebnf$3", "symbols": [], "postprocess": () => null},
+    {"name": "WordSentenceStarter", "symbols": [{"literal":"n"}, "WordSentenceStarter$ebnf$3"], "postprocess": makeLeaf("start")},
+    {"name": "WordSentenceStarter", "symbols": ["WordEmphasis"], "postprocess": makeLabelled("start")}
   ],
   ParserStart: "Main",
 };
