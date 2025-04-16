@@ -44,7 +44,7 @@ Clause<P> -> Predicates<o> {% makeLabelled("clause_imperative") %}
 GeneralSubject -> MarkedSubject {% id %}
 GeneralSubject -> UnmarkedSubject {% id %}
 
-MarkedSubject -> WordMarkedSubjectHead {% makeLabelled("subject") %}
+MarkedSubject -> (WordMarkedSubjectHead {% makeLabelled("head") %}) {% makeLabelled("subject") %}
 MarkedSubject -> PiPhrase<multiple> {% makeLabelled("subject") %}
 MarkedSubject -> MultipleSubjects<none> {% id %}
 
