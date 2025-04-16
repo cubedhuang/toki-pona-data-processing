@@ -1,12 +1,7 @@
 import { getTimestamp } from 'discord-snowflake';
 
-import { Tag, tagWords } from './lib/tag';
-import {
-	ParsedMessage,
-	RawMessage,
-	ScoredMessage,
-	TaggedMessage
-} from './types';
+import { Tag } from './lib/tag';
+import { TaggedCounts, TaggedMessage, TaggedWordCounts } from './types';
 import { fileAddon, readFileByLine } from './utils';
 
 function createCounts(): Record<Tag, number> {
@@ -23,7 +18,6 @@ function createCounts(): Record<Tag, number> {
 }
 
 async function main() {
-	// const words: Record<string, Record<Tag, number>> = {};
 	const years: Record<number, Record<string, Record<Tag, number>>> = {};
 
 	let i = 0;
@@ -53,7 +47,7 @@ async function main() {
 			for (const taggedWord of sentence.words) {
 				const word = taggedWord.word.text.toLowerCase();
 
-				if (word === 'luka' && taggedWord.tag === 'particle') {
+				if (word === 'a' && taggedWord.tag === 'noun') {
 					console.log(
 						sentence.words.map((w) => w.word.text).join(' ')
 					);
@@ -73,7 +67,11 @@ async function main() {
 		}
 	});
 
-	for (const [year, words] of Object.entries(years)) {
+	const output: TaggedCounts = {};
+
+	for (const [year, words] of Object.entries(years).sort(
+		([yearA], [yearB]) => Number(yearA) - Number(yearB)
+	)) {
 		const sortedWords = Object.entries(words)
 			.sort(([nameA], [nameB]) => nameA.localeCompare(nameB))
 			.map(([word, counts]) => ({
@@ -83,11 +81,13 @@ async function main() {
 			}))
 			.filter(({ total }) => total >= 30);
 
-		await Bun.write(
-			`./files/5.taggedcounts.${year}${fileAddon}.json`,
-			JSON.stringify(sortedWords, null, 2)
-		);
+		output[year] = sortedWords;
 	}
+
+	await Bun.write(
+		`./files/5.taggedcounts.${fileAddon}.json`,
+		JSON.stringify(output, null, 2)
+	);
 }
 
 main();

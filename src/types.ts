@@ -1,4 +1,4 @@
-import { TaggedWord } from './lib/tag';
+import { Tag, TaggedWord } from './lib/tag';
 import { Tree } from './parse/types';
 
 // part 1: raw data
@@ -32,4 +32,13 @@ export type TaggedMessage = {
 };
 export type TaggedSentence = {
 	words: TaggedWord[];
+};
+
+// part 5: tagged counts
+// map from year to counts
+export type TaggedCounts = Record<string, TaggedWordCounts[]>;
+export type TaggedWordCounts = {
+	word: string;
+	counts: Record<Tag, number>;
+	total: number;
 };
