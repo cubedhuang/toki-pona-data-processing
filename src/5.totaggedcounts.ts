@@ -47,11 +47,11 @@ async function main() {
 			for (const taggedWord of sentence.words) {
 				const word = taggedWord.word.text.toLowerCase();
 
-				if (word === 'a' && taggedWord.tag === 'noun') {
-					console.log(
-						sentence.words.map((w) => w.word.text).join(' ')
-					);
-				}
+				// if (word === 'a' && taggedWord.tag === 'noun') {
+				// 	console.log(
+				// 		sentence.words.map((w) => w.word.text).join(' ')
+				// 	);
+				// }
 
 				if (word in words) {
 					words[word][taggedWord.tag]++;
@@ -85,7 +85,7 @@ async function main() {
 	}
 
 	await Bun.write(
-		`./files/5.taggedcounts.${fileAddon}.json`,
+		`./files/5.taggedcounts${fileAddon}.json`,
 		JSON.stringify(output, null, 2)
 	);
 }
